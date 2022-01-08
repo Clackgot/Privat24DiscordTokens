@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Privar24DiscordTokens", "Privar24DiscordTokens\Privar24DiscordTokens.csproj", "{6AF6492C-E7BA-42D4-858F-FFDEEC67242A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordTokensWPF", "DiscordTokensWPF\DiscordTokensWPF.csproj", "{810771F8-93DF-4985-BDB7-C8EC4B5765E7}"
 EndProject
 Global
@@ -13,10 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6AF6492C-E7BA-42D4-858F-FFDEEC67242A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6AF6492C-E7BA-42D4-858F-FFDEEC67242A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6AF6492C-E7BA-42D4-858F-FFDEEC67242A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6AF6492C-E7BA-42D4-858F-FFDEEC67242A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{810771F8-93DF-4985-BDB7-C8EC4B5765E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{810771F8-93DF-4985-BDB7-C8EC4B5765E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{810771F8-93DF-4985-BDB7-C8EC4B5765E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
