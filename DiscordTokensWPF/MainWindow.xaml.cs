@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
@@ -47,23 +48,43 @@ namespace DiscordTokensWPF
             }
         }
 
-        private async Task<string> GetToken2(string filename)
+        private async Task<List<string>> GetDiscordTokens(string filename)
         {
+            List<string> tokens = new List<string>();
             using (StreamReader fIn = new StreamReader(filename))
             {
-                // Метод Peek() - определить, конец ли файла
-                while (fIn.Peek() != -1)
+                //// Метод Peek() - определить, конец ли файла
+                //while (fIn.Peek() != -1)
+                //{
+                //    string s = await fIn.ReadLineAsync(); // прочитать строку
+                //    Regex regex = new Regex(@"^\S{24}\.\S{6}\.\S{27}\r");
+                //    var b = regex.Match(s).Success;
+
+                //    if(b)
+                //    {
+                //        docBox.AppendText(s);
+                //    }
+                //    //bool isContains = s.Contains(".twitch.tv") && s.Contains("auth-token");//Поиск подходящей строки
+                //    //if (isContains)
+                //    //{
+                //    //    fIn.Close();
+                //    //    return s.Split().Last();
+                //    //}
+                //}
+
+                string allText = await fIn.ReadToEndAsync();
+                Regex regex = new Regex(@"^\S{24}\.\S{6}\.\S{27}\r");
+                var match = regex.Match(allText);
+                foreach (var item in match.Groups)
                 {
-                    string s = await fIn.ReadLineAsync(); // прочитать строку
-                    bool isContains = s.Contains(".twitch.tv") && s.Contains("auth-token");//Поиск подходящей строки
-                    if (isContains)
+                    if (!string.IsNullOrEmpty(item.ToString()))
                     {
-                        fIn.Close();
-                        return s.Split().Last();
+                        System.Console.WriteLine(item);
+                        tokens.Add(item.ToString());
                     }
                 }
             }
-            return null;
+            return tokens;
         }
 
 
@@ -91,10 +112,13 @@ namespace DiscordTokensWPF
                 foreach (string filename in allfiles)
                 {
                     statusTextBlock.Text = $"[{index}/{count}]";
-                    var token = await GetToken2(filename);
-                    if (!string.IsNullOrEmpty(token))
+                    var tokens = await GetDiscordTokens(filename);
+                    foreach (var token in tokens)
                     {
-                        resultTokens += $"{token}\n";
+                        if (!string.IsNullOrEmpty(token))
+                        {
+                            resultTokens += $"{token}\n";
+                        }
                     }
                     index++;
                     progressBar.Value = ((double)index / count)*100;
