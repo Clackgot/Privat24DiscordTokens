@@ -14,11 +14,17 @@ namespace DiscordTokensWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        private List<string> parsedTokens = new List<string>();
+        private List<string> loadedTokens = new List<string>();
+
+
         public MainWindow()
         {
             InitializeComponent();
+            docBox.Document.PageWidth = 400;
         }
-        private void Save_Click(object sender, RoutedEventArgs e)
+        private void SaveTokens_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "Text Files (*.txt)|*.txt|All files (*.*)|*.*";
@@ -79,7 +85,6 @@ namespace DiscordTokensWPF
                 {
                     if (!string.IsNullOrEmpty(item.ToString()))
                     {
-                        System.Console.WriteLine(item);
                         tokens.Add(item.ToString());
                     }
                 }
@@ -88,9 +93,10 @@ namespace DiscordTokensWPF
         }
 
 
-        private async void Load_Click(object sender, RoutedEventArgs e)
+        private async void LoadLogs_Click(object sender, RoutedEventArgs e)
         {
             TextRange doc = new TextRange(docBox.Document.ContentStart, docBox.Document.ContentEnd);
+            doc.Text = "";
             var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
             dialog.Multiselect = true;
             if (dialog.ShowDialog(this).GetValueOrDefault())
@@ -106,7 +112,6 @@ namespace DiscordTokensWPF
                     statusTextBlock.Text = $"Загружено {allfiles.Count.ToString()} файлов";
                 }
 
-                string resultTokens = "";
                 int count = allfiles.Count;
                 int index = 1;
                 foreach (string filename in allfiles)
@@ -117,14 +122,116 @@ namespace DiscordTokensWPF
                     {
                         if (!string.IsNullOrEmpty(token))
                         {
-                            resultTokens += $"{token}\n";
+                            //resultTokens += $"{token}\n";
+                            parsedTokens.Add(token.Trim());
                         }
                     }
                     index++;
                     progressBar.Value = ((double)index / count)*100;
                 }
-                doc.Text = resultTokens;
+                if(parsedTokens.Count == 0)
+                {
+                    MessageBox.Show("Discord токенов не найдено");
+                }
+                foreach (var token in parsedTokens)
+                {
+                    docBox.AppendText($"{token}\n");
+                }
+                //doc.Text = resultTokens;
             }
+        }
+
+        private async void SaveNewTokens_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Text Files (*.txt)|*.txt|All files (*.*)|*.*";
+            if (sfd.ShowDialog() == true)
+            {
+                TextRange doc = new TextRange(docBox2.Document.ContentStart, docBox2.Document.ContentEnd);
+                using (FileStream fs = File.Create(sfd.FileName))
+                {
+                    if (Path.GetExtension(sfd.FileName).ToLower() == ".txt")
+                        doc.Save(fs, DataFormats.Text);
+                }
+            }
+
+            //TextRange doc = new TextRange(docBox2.Document.ContentStart, docBox2.Document.ContentEnd);
+            //doc.Text = "";
+            //newTokens = parsedTokens.Except(loadedTokens) as List<string>;
+            //string text = "";
+            //foreach (var token in newTokens)
+            //{
+            //    text += token + "\n";
+            //}
+            
+        }
+
+        private async void LoadTokens_Click(object sender, RoutedEventArgs e)
+        {
+            //TextRange doc = new TextRange(docBox2.Document.ContentStart, docBox2.Document.ContentEnd);
+            //doc.Text = "";
+            var dialog = new Ookii.Dialogs.Wpf.VistaOpenFileDialog();
+            dialog.Multiselect = false;
+            dialog.Filter = "txt|*txt";
+            if (dialog.ShowDialog(this).GetValueOrDefault())
+            {
+                var stream = dialog.OpenFile();
+                //StreamReader streamReader = new StreamReader(stream);
+                //var text = await streamReader.ReadToEndAsync();
+                //doc.Text = text;
+
+                using (StreamReader sr = new StreamReader(stream))
+                {
+                    string token;
+                    while ((token = await sr.ReadLineAsync()) != null)
+                    {
+                        if (!string.IsNullOrEmpty(token))
+                        {
+                            loadedTokens.Add(token);
+                        }
+                    }
+                }
+            }
+
+        }
+
+
+        private async void GetNewTokens_Click(object sender, RoutedEventArgs e)
+        {
+            #region Test1
+            //TextRange doc = new TextRange(docBox2.Document.ContentStart, docBox2.Document.ContentEnd);
+            //doc.Text = "";
+
+            //System.Console.WriteLine($"С логов: {parsedTokens.Count}");
+            //System.Console.WriteLine($"С базы: {loadedTokens.Count}");
+
+            //List<string> newTokens = loadedTokens.Except(parsedTokens).ToList();
+            //System.Console.WriteLine($"Новых: {newTokens.Count}");
+            //string text = "";
+            //foreach (var token in newTokens)
+            //{
+            //    text += token + "\n";
+            //}
+            //doc.Text = text; 
+            #endregion
+
+
+
+            TextRange doc = new TextRange(docBox2.Document.ContentStart, docBox2.Document.ContentEnd);
+            doc.Text = "";
+
+            List<string> newTokens = parsedTokens.Except(loadedTokens).ToList();
+
+
+            //System.Console.WriteLine($"Новых: {result.Count}");
+            string text = "";
+            foreach (var token in newTokens)
+            {
+                text += token + "\n";
+            }
+            doc.Text = text;
+
+
         }
     }
 }
