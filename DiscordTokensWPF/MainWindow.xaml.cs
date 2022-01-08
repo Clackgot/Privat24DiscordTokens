@@ -145,6 +145,7 @@ namespace DiscordTokensWPF
         {
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "Text Files (*.txt)|*.txt|All files (*.*)|*.*";
+            sfd.FileName = "netTokens.txt";
             if (sfd.ShowDialog() == true)
             {
                 TextRange doc = new TextRange(docBox2.Document.ContentStart, docBox2.Document.ContentEnd);

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiscordTokensWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="916">
+        Title="Парсер токенов Discord" Height="450" Width="916">
 	<Window.Resources>
 		<Style TargetType="Button">
 			<Setter Property="Height" Value="25" />
@@ -25,20 +25,27 @@
 				<ColumnDefinition></ColumnDefinition>
 				<ColumnDefinition></ColumnDefinition>
 			</Grid.ColumnDefinitions>
-			<RichTextBox FontFamily="Consolas" Grid.Column="0" x:Name="docBox" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
-				<RichTextBox.Resources>
-					<Style TargetType="{x:Type Paragraph}">
-						<Setter Property="Margin" Value="0"/>
-					</Style>
-				</RichTextBox.Resources>
-			</RichTextBox>
-			<RichTextBox FontFamily="Consolas" Grid.Column="1" x:Name="docBox2" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
-				<RichTextBox.Resources>
-					<Style TargetType="{x:Type Paragraph}">
-						<Setter Property="Margin" Value="0"/>
-					</Style>
-				</RichTextBox.Resources>
-			</RichTextBox>
+			<DockPanel LastChildFill="True" Grid.Column="0" >
+				<TextBlock Margin="0,5,0,5"  HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Токены с логов"></TextBlock>
+				<RichTextBox DockPanel.Dock="Bottom" FontFamily="Consolas" x:Name="docBox" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
+					<RichTextBox.Resources>
+						<Style TargetType="{x:Type Paragraph}">
+							<Setter Property="Margin" Value="0"/>
+						</Style>
+					</RichTextBox.Resources>
+				</RichTextBox>
+			</DockPanel>
+			<DockPanel LastChildFill="True" Grid.Column="1">
+				<TextBlock Margin="0,5,0,5"  HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Новые токены"></TextBlock>
+				<RichTextBox DockPanel.Dock="Bottom" FontFamily="Consolas" x:Name="docBox2" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
+					<RichTextBox.Resources>
+						<Style TargetType="{x:Type Paragraph}">
+							<Setter Property="Margin" Value="0"/>
+						</Style>
+					</RichTextBox.Resources>
+				</RichTextBox>
+			</DockPanel>
+			
 
 		</Grid>
 		
@@ -46,7 +53,7 @@
 			<Button Padding="5,0,5,0" Height="28" Margin="10" Content="Загрузить логи" Width="auto"  Click="LoadLogs_Click" />
 			<Button Padding="5,0,5,0" Height="28" Margin="10" Content="Сохранить токены с логов" Width="auto" Click="SaveTokens_Click" />
 			<Button Padding="5,0,5,0" Height="28" Margin="10" Content="Загрузить файл с токенами" Width="auto"  Click="LoadTokens_Click" />
-			<Button Padding="5,0,5,0" Height="28" Margin="10" Content="Получить только новые токены" Width="auto"  Click="GetNewTokens_Click" />
+			<Button Padding="5,0,5,0" Height="28" Margin="10" Content="Спарсить новые токены" Width="auto"  Click="GetNewTokens_Click" />
 			<Button Padding="5,0,5,0" Height="28" Margin="10" Content="Сохранить новые токены" Width="auto"  Click="SaveNewTokens_Click" />
 		</StackPanel>
 		<StatusBar Grid.Row="2">
