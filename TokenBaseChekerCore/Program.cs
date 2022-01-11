@@ -11,40 +11,10 @@ namespace TokenBaseChekerCore
     /// <summary>
     /// Результат проверки
     /// </summary>
-    struct CheckInfo2
-    {
-        /// <summary>
-        /// Найдено дублей в базе
-        /// </summary>
-        public int DublicateTokensInDataCount;
-        /// <summary>
-        /// Найдено дублей в логах
-        /// </summary>
-        public int DublicateTokensInLogsCount;
-
-
-        /// <summary>
-        /// Токенов, которые уже есть в базе
-        /// </summary>
-        public int MatchesInDataCount;
-
-        /// <summary>
-        /// Новых токенов
-        /// </summary>
-        public int NewTokensInLogsCount;
-
-        public override string ToString()
-        {
-            return $"Дублей в базе:{DublicateTokensInDataCount} Дублей в логах:{DublicateTokensInLogsCount}\n" +
-                $"Токенов из логов в базе:{MatchesInDataCount} Новых токенов:{NewTokensInLogsCount}";
-        }
-    }
-
-
     struct CheckInfo
     {
-        public TokensDataInfo dataInfo;
-        public TokensDataInfo logsInfo;
+        public TokensInfo dataInfo;
+        public TokensInfo logsInfo;
 
 
         /// <summary>
@@ -66,7 +36,10 @@ namespace TokenBaseChekerCore
 
     }
 
-    struct TokensDataInfo
+    /// <summary>
+    /// Информация о загруженных токенах
+    /// </summary>
+    struct TokensInfo
     {
         /// <summary>
         /// Удалено дублей
@@ -101,83 +74,18 @@ namespace TokenBaseChekerCore
             //set { checkResult = value; }
         }
 
+        public string DataFileName { get; }
+        public string LogsFileName { get; }
 
-        //private ICollection<string> newTokens = new HashSet<string>();
-
-        //public IReadOnlyCollection<string> NewTokens
-        //{
-        //    get { return newTokens.ToList(); }
-        //}
-        public string BaseName { get; }
-        public string NewName { get; }
-
-        public Checker(string baseName, string newName)
+        public Checker(string dataFilePath, string logsFilePath)
         {
-            BaseName = baseName;
-            NewName = newName;
+            DataFileName = dataFilePath;
+            LogsFileName = logsFilePath;
         }
 
-        //public async Task<CheckInfo> CheckAsync()
-        //{
-        //    var baseLines = await File.ReadAllLinesAsync(BaseName);
-        //    var newLines = await File.ReadAllLinesAsync(NewName);
 
-        //    newTokens = (ICollection<string>)newLines.Except(baseLines);
-        //    return new CheckInfo();
-        //}
-
-        //public CheckInfo Check()
-        //{
-        //    HashSet<string> baseLines = File.ReadAllLines(BaseName).ToHashSet();
-        //    HashSet<string> newLines = File.ReadAllLines(NewName).ToHashSet();
-        //    baseLines = (HashSet<string>)baseLines.Select(outer => outer.Trim());
-
-        //    newTokens = (ICollection<string>)newLines.Except(baseLines);
-        //    return new CheckInfo();
-        //}
-
-
-        public List<string> LoadDataTokens()
+        private static async Task<(List<string>, TokensInfo)> GetValidTokensAsync(string fileName)
         {
-            HashSet<string> baseLines = File.ReadAllLines(BaseName).ToHashSet();
-            baseLines = baseLines.Select(outer => outer.Trim()).ToHashSet();
-
-            Regex regex = new Regex(@"^\S{24}\.\S{6}\.\S{27}$");
-            baseLines = baseLines.Where(outer => regex.Match(outer).Success).ToHashSet();
-            baseLines.Remove("");
-            return baseLines.ToList();
-        }
-
-        public async Task<ICollection<string>> GetDataTokensAsyncOld()
-        {
-
-            var lines = await File.ReadAllLinesAsync(BaseName);//Все строки файла
-            int dataLinesCount = lines.Count();//Всего строк
-            HashSet<string> dataLines = lines.ToHashSet();
-            dataLines = dataLines.Select(outer => outer.Trim()).ToHashSet();
-
-            int dataLinesCountAfterRemoveddDublicate = dataLines.Count();
-
-            //CheckingResult.dataInfo.RemovedDublicatesCount = dataLinesCount - dataLinesCountAfterRemoveddDublicate;
-
-            dataLines.Remove("");
-            Regex regex = new Regex(@"^\S{24}\.\S{6}\.\S{27}$");
-            dataLines = dataLines.Where(outer => regex.Match(outer).Success).ToHashSet();
-
-            int dataLinesCountAfterRemoveInvalidLines = dataLines.Count();
-
-            checkResult.dataInfo = new TokensDataInfo()
-            {
-                RemovedDublicatesCount = dataLinesCount - dataLinesCountAfterRemoveddDublicate,
-                RemovedBrokenLinesCount = dataLinesCountAfterRemoveddDublicate - dataLinesCountAfterRemoveInvalidLines,
-            };
-
-            return dataLines.ToList();
-        }
-
-        private async Task<(ICollection<string>, TokensDataInfo)> GetValidTokensAsync(string fileName)
-        {
-
             string[] linesArray = await File.ReadAllLinesAsync(fileName); //Все строки файла в виде массива
             List<string> lines = linesArray.ToList(); //Все строки файла в виде списка
             int removedEmptyLinesCount = lines.RemoveAll(x => string.IsNullOrWhiteSpace(x));//Удаление пустых строк
@@ -187,33 +95,43 @@ namespace TokenBaseChekerCore
             //lines = lines.Where(outer => regex.Match(outer).Success).ToList();
             int removedInvalidLines = lines.RemoveAll(outer => !regex.Match(outer).Success); //Удалить невалидные строки
 
-
             var UniqLines = lines.Distinct();
             var RemovedDublicatesLines = lines.Count - UniqLines.Count();
 
-            //checkResult.dataInfo = new TokensDataInfo()
-            //{
-            //    RemovedEmptyLinesCount = removedEmptyLinesCount,
-            //    RemovedBrokenLinesCount = removedInvalidLines,
-            //    RemovedDublicatesCount = RemovedDublicatesLines,
-            //};
-
-            checkResult.dataInfo = new TokensDataInfo()
+            TokensInfo info = new TokensInfo()
             {
                 RemovedEmptyLinesCount = removedEmptyLinesCount,
                 RemovedBrokenLinesCount = removedInvalidLines,
                 RemovedDublicatesCount = RemovedDublicatesLines,
             };
 
-            return (UniqLines.ToList(), TokensDataInfo);
+            return (UniqLines.ToList(), info);
         }
 
 
 
-        public async Task<ICollection<string>> GetNewTokens()
+        public async Task<List<string>> GetNewTokensAsync()
         {
-            var baseTokens = await GetValidTokensAsync(BaseName);
-            var baseTokens = await GetValidTokensAsync(BaseName);
+            (List<string>, TokensInfo) dataTokensResult = await GetValidTokensAsync(DataFileName);
+            (List<string>, TokensInfo) logsTokensResult = await GetValidTokensAsync(LogsFileName);
+
+            List<string> data = dataTokensResult.Item1.ToList();
+            List<string> logs = logsTokensResult.Item1.ToList();
+
+            List<string> resulTokenList = logs.Except(data).ToList();
+
+            int newTokensInLogsCount = resulTokenList.Count;
+            int matchesInDataCount = logs.Count - resulTokenList.Count;
+
+            checkResult = new CheckInfo()
+            {
+                dataInfo = dataTokensResult.Item2,
+                logsInfo = logsTokensResult.Item2,
+                MatchesInDataCount = matchesInDataCount,
+                NewTokensInLogsCount = newTokensInLogsCount,
+            };
+
+            return resulTokenList;
         }
 
     }
@@ -223,44 +141,14 @@ namespace TokenBaseChekerCore
 
         static void Main(string[] args)
         {
-            #region Trash
-            //List<string> vs1 = new List<string>()
-            //{
-            //    "test1",
-            //    "test2",
-            //    "test3",
-            //    "test4",
-            //    "test5",
-            //    "test6",
-            //};
-            //List<string> vs2 = new List<string>()
-            //{
-            //    "test3",
-            //    "test4",
-            //};
+            Checker checker = new Checker("base.txt", "new.txt");
 
-
-            //ICollection<string> NewTokens = new HashSet<string>();
-            //NewTokens.Add("123");
-            //NewTokens.Add("123");
-
-            //foreach (var item in NewTokens)
-            //{
-            //    Console.WriteLine(item);
-            //} 
-            #endregion
-
-
-            Checker checker = new Checker("baseWithBrokenWithoutDublicate.txt", "new.txt");
-            //Console.WriteLine(checker.Check());
-            Console.WriteLine(checker.GetValidTokensAsync().GetAwaiter().GetResult().Count());
-
+            var tokens = checker.GetNewTokensAsync().GetAwaiter().GetResult();
             Console.WriteLine(checker.CheckResult);
-
-            //foreach (var item in checker.GetDataTokensAsync().GetAwaiter().GetResult())
-            //{
-            //    Console.WriteLine($"[{item}]");
-            //}
+            foreach (var token in tokens)
+            {
+                Console.WriteLine(token);
+            }
         }
     }
 }
