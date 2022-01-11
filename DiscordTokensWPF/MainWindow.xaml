@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiscordTokensWPF"
         mc:Ignorable="d"
-        Title="Парсер токенов Discord" Height="450" Width="916">
+        Title="Парсер токенов Discord" Height="506" Width="916">
 	<Window.Resources>
 		<Style TargetType="Button">
 			<Setter Property="Height" Value="25" />
@@ -32,19 +32,19 @@
 
 		</TabItem>
 		<TabItem Header="Парсер токенов">
-			<Grid>
+			<Grid Height="496">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="29*"/>
 					<ColumnDefinition Width="881*"/>
 				</Grid.ColumnDefinitions>
 				<Grid.RowDefinitions>
-					<RowDefinition Height="*" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="23" />
+					<RowDefinition Height="300" />
+					<RowDefinition Height="80" />
+					<RowDefinition Height="80" />
 				</Grid.RowDefinitions>
 
-				<Grid Grid.ColumnSpan="2">
-					<Grid.ColumnDefinitions>
+                <Grid  Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
 						<ColumnDefinition></ColumnDefinition>
 						<ColumnDefinition></ColumnDefinition>
 					</Grid.ColumnDefinitions>
@@ -58,28 +58,26 @@
 							</RichTextBox.Resources>
 						</RichTextBox>
 					</DockPanel>
-					<DockPanel LastChildFill="True" Grid.Column="1">
-						<TextBlock Margin="0,5,0,5"  HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Новые токены"></TextBlock>
-						<RichTextBox DockPanel.Dock="Bottom" FontFamily="Consolas" x:Name="docBox2" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
-							<RichTextBox.Resources>
-								<Style TargetType="{x:Type Paragraph}">
-									<Setter Property="Margin" Value="0"/>
-								</Style>
-							</RichTextBox.Resources>
-						</RichTextBox>
-					</DockPanel>
+                    <DockPanel LastChildFill="True" Grid.Column="1">
+                        <TextBlock Margin="0,5,0,5"  HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Новые токены"></TextBlock>
+                        <RichTextBox DockPanel.Dock="Bottom" FontFamily="Consolas" x:Name="docBox2" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
+                            <RichTextBox.Resources>
+                                <Style TargetType="{x:Type Paragraph}">
+                                    <Setter Property="Margin" Value="0"/>
+                                </Style>
+                            </RichTextBox.Resources>
+                        </RichTextBox>
+                    </DockPanel>
+                </Grid>
 
-
-				</Grid>
-
-				<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="1" Margin="23,335,0,0" Grid.RowSpan="2">
-					<Button Padding="5,0,5,0" Height="28" Margin="10" Content="Загрузить логи" Width="auto"  Click="LoadLogs_Click" />
-					<Button Padding="5,0,5,0" Height="28" Margin="10" Content="Сохранить токены с логов" Width="auto" Click="SaveTokens_Click" />
-					<Button Padding="5,0,5,0" Height="28" Margin="10" Content="Загрузить файл с токенами" Width="auto"  Click="LoadTokens_Click" />
-					<Button Padding="5,0,5,0" Height="28" Margin="10" Content="Спарсить новые токены" Width="auto"  Click="GetNewTokens_Click" />
-					<Button Padding="5,0,5,0" Height="28" Margin="10" Content="Сохранить новые токены" Width="auto"  Click="SaveNewTokens_Click" />
+				<StackPanel Margin="-30,0,0,80" Background="Red" Orientation="Horizontal" Height="80" Grid.Column="1"  Grid.RowSpan="2" Grid.Row="1">
+					<Button  Height="28" Content="Загрузить логи" Width="auto"  Click="LoadLogs_Click" />
+					<Button  Height="28" Content="Сохранить токены с логов" Width="auto" Click="SaveTokens_Click" />
+					<Button  Height="28" Content="Загрузить файл с токенами" Width="auto"  Click="LoadTokens_Click" />
+					<Button  Height="28" Content="Спарсить новые токены" Width="auto"  Click="GetNewTokens_Click" />
+                    <Button  Height="28" Content="Сохранить новые токены" Width="auto"  Click="SaveNewTokens_Click" />
 				</StackPanel>
-				<StatusBar Grid.Row="1" Grid.ColumnSpan="2" Margin="0,48,0,0" Grid.RowSpan="2">
+				<StatusBar Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2">
 					<TextBlock x:Name="statusTextBlock" Text="Статус"></TextBlock>
 					<ProgressBar x:Name="progressBar" Value="30" Width="200" Height="13"></ProgressBar>
 				</StatusBar>
