@@ -43,8 +43,8 @@ namespace TokenBaseChekerCore
             newTokens = (ICollection<string>)newLines.Except(baseLines);
             return new CheckInfo();
         }
-
-        public async Task<CheckInfo> Check()
+        
+        public CheckInfo Check()
         {
             var baseLines = File.ReadAllLines(BaseName);
             var newLines = File.ReadAllLines(NewName);
