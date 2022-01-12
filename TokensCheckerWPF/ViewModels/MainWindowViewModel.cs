@@ -74,6 +74,7 @@ namespace TokensCheckerWPF.ViewModels
 
         private async void OnOpenDataCommandExecuted(object p)
         {
+            DataTokens.Clear();
             var dialog = new Ookii.Dialogs.Wpf.VistaOpenFileDialog();
             dialog.Filter = "Text Files (*.txt)|*.txt|All files (*.*)|*.*";
             if (dialog.ShowDialog().GetValueOrDefault())
@@ -90,6 +91,7 @@ namespace TokensCheckerWPF.ViewModels
                             DataTokens.Add(token);
                         }
                     }
+                    MessageBox.Show($"Загружено {DataTokens.Count} строк", "Загружено", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 if (dataTokens.Count > 0 && logsTokens.Count > 0)
                 {
@@ -98,7 +100,7 @@ namespace TokensCheckerWPF.ViewModels
                     var newTokens = await checker.GetNewTokensAsync();
 
                     NewTokens = new ObservableCollection<string>(newTokens);
-                    MessageBox.Show(checker.CheckResult.ToString());
+                    MessageBox.Show(checker.CheckResult.ToString(), "Результат", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
         }
@@ -111,6 +113,7 @@ namespace TokensCheckerWPF.ViewModels
 
         private async void OnOpenLogsCommandExecuted(object p)
         {
+            LogsTokens.Clear();
             var dialog = new Ookii.Dialogs.Wpf.VistaOpenFileDialog();
             dialog.Filter = "Text Files (*.txt)|*.txt|All files (*.*)|*.*";
             if (dialog.ShowDialog().GetValueOrDefault())
@@ -127,6 +130,7 @@ namespace TokensCheckerWPF.ViewModels
                             LogsTokens.Add(token);
                         }
                     }
+                    MessageBox.Show($"Загружено {LogsTokens.Count} строк", "Загружено", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 if (dataTokens.Count > 0 && logsTokens.Count > 0)
                 {
@@ -136,8 +140,8 @@ namespace TokensCheckerWPF.ViewModels
 
                     NewTokens = new ObservableCollection<string>(newTokens);
 
-                    MessageBox.Show(checker.CheckResult.ToString());
-                    
+                    MessageBox.Show(checker.CheckResult.ToString(), "Результат", MessageBoxButton.OK, MessageBoxImage.Information);
+
                 }
             }
         }

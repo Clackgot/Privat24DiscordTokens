@@ -6,12 +6,18 @@
         xmlns:local="clr-namespace:TokensCheckerWPF.Views"
         xmlns:vm="clr-namespace:TokensCheckerWPF.ViewModels"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="450" Width="490" MinHeight="450" MinWidth="490">
+        Title="{Binding Title}" Height="450" Width="490" MinHeight="450" MinWidth="490" MaxWidth="490">
     <Window.DataContext>
         <vm:MainWindowViewModel></vm:MainWindowViewModel>
     </Window.DataContext>
     <Grid>
-        <DockPanel>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Уникальные токены"></TextBlock>
+        <DockPanel Grid.Row="1">
 
             <Grid DockPanel.Dock="Bottom" >
 
@@ -27,7 +33,7 @@
             </Grid>
 
 
-            <ListBox Width="430" DockPanel.Dock="Top" Margin="20" ItemsSource="{Binding NewTokens}">
+            <ListBox Width="430" DockPanel.Dock="Top" Margin="20,0,20,20" ItemsSource="{Binding NewTokens}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -36,8 +42,6 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-
-
         </DockPanel>
     </Grid>
 </Window>
