@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordTokensWPF", "DiscordTokensWPF\DiscordTokensWPF.csproj", "{810771F8-93DF-4985-BDB7-C8EC4B5765E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenBaseChekerCore", "TokenBaseChekerCore\TokenBaseChekerCore.csproj", "{CD13F23E-017F-4FB2-BC17-4407539ADAE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenBaseChekerCore", "TokenBaseChekerCore\TokenBaseChekerCore.csproj", "{CD13F23E-017F-4FB2-BC17-4407539ADAE5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokensCheckerWPF", "TokensCheckerWPF\TokensCheckerWPF.csproj", "{4AAB291F-9EA7-4FF7-BCD2-87199915AE46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokensCheckerWPF", "TokensCheckerWPF\TokensCheckerWPF.csproj", "{4AAB291F-9EA7-4FF7-BCD2-87199915AE46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{810771F8-93DF-4985-BDB7-C8EC4B5765E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{810771F8-93DF-4985-BDB7-C8EC4B5765E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{810771F8-93DF-4985-BDB7-C8EC4B5765E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{810771F8-93DF-4985-BDB7-C8EC4B5765E7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CD13F23E-017F-4FB2-BC17-4407539ADAE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CD13F23E-017F-4FB2-BC17-4407539ADAE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD13F23E-017F-4FB2-BC17-4407539ADAE5}.Release|Any CPU.ActiveCfg = Release|Any CPU

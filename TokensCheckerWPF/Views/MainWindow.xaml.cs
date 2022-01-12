@@ -12,8 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TokensCheckerWPF.ViewModels;
 
-namespace TokensCheckerWPF
+namespace TokensCheckerWPF.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
