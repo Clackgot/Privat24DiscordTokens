@@ -159,10 +159,10 @@ namespace TokensCheckerWPF.ViewModels
             dialog.FileName = "newTokens.txt";
             if (dialog.ShowDialog() == true)
             {
+                if (File.Exists(dialog.FileName)) File.Delete(dialog.FileName);
                 using (FileStream fstream = new FileStream(dialog.FileName, FileMode.OpenOrCreate))
                 {
-                    await fstream.FlushAsync();
-                    foreach (var line in dataTokens)
+                    foreach (var line in newTokens)
                     {
                         byte[] array = Encoding.Default.GetBytes($"{line}\n");
                         // запись массива байтов в файл
